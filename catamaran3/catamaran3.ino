@@ -10,7 +10,7 @@ int speedr;
 
 
 void setup() {
-  
+    Serial.begin(9600);
     motor1.attach(10);
     motor2.attach(9);
     motor1.writeMicroseconds(800);
@@ -27,16 +27,18 @@ void loop()
     
      if (isDigit(signal))
      {
-      transmission = signal;
+      transmission = int(signal-48);
        Serial.println(transmission); 
      }
     
     
     
     speed = Serial.read();
-    Serial.println(speed);
+    
+
 
     speed = constrain(speed,800,2100);
+    
     
 
     motor1.writeMicroseconds(speed);
@@ -46,33 +48,27 @@ void loop()
     speed = (transmission * 144) + 800;
     left = speed;
     right = speed;
-    speedr = ((transmission - 1) * 144) + 800;
+    
     if (signal == 'L')
     {
 
-     motor1 = ((transmission + 1) * 144) + 800;
-     motor2 = speedr;
-      //left;
-      Serial.println("left");
+     left = (transmission+1) *144+800;
+      Serial.println(left);
       }
     if (signal == 'F')
     {
-      speed;
-       Serial.println("forward")
+      motor1.writeMicroseconds(speed);
+      motor2.writeMicroseconds(speed);
+       Serial.println("forward");
       }
     
     if (signal == 'R')
     {
       
-      speedr = motor1
-      Serial.println("right");
+      right = (transmission+1)*144+800;
+      Serial.println(right);
       }
 
-    if (signal == 'B')
-    {
-      speed = 0;
-      Serial.println("stop");
-      }
     
   motor1.writeMicroseconds(right);
   motor2.writeMicroseconds(left);
